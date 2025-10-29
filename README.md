@@ -1,1 +1,1 @@
-# Minimally required Nix Home Manager configuration for the Steam Deck
+### Minimally required Nix Home Manager configuration for the Steam Deck
