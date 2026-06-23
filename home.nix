@@ -1,66 +1,59 @@
 { config, lib, pkgs, nixgl, ... }:
 
+# Minimal Home Manager base for Steam Deck (SteamOS, non-NixOS).
+# Solves only SteamDeck-specific issues; add your own programs/options below.
+
+let
+  # Keep Flatpak first (set by /etc/profile -> flatpak.sh), append Nix+system.
+  xdgDataDirsAppend =
+    "\${XDG_DATA_DIRS:+\$XDG_DATA_DIRS:}${lib.concatStringsSep ":" config.xdg.systemDirs.data}";
+
+  # POSIX dedup, keep-first, order preserved (works in zsh/bash and fish via babelfish).
+  dedupXdgDataDirs = ''
+    XDG_DATA_DIRS="$(printf '%s' "$XDG_DATA_DIRS" | awk -v RS=: -v ORS=: '!a[$0]++' | sed 's/:$//')"
+    export XDG_DATA_DIRS
+  '';
+in
 {
-
-  nixGL = {
-    packages = nixgl.packages;
-    defaultWrapper = "mesa";
-    installScripts = [ "mesa" ];
-    vulkan.enable = true;
-  };
-
   home.username = "deck";
   home.homeDirectory = "/home/deck";
+  home.stateVersion = "26.05";
 
-  home.stateVersion = "25.05"; # Please read the new release comment before changing.
-
+  # Required on non-NixOS.
   targets.genericLinux.enable = true;
   xdg.enable = true;
 
-  # Perform a menu/icon update and shell rehash without requiring a relogin
-  home.activation = {
-    refreshPlasma6 = lib.hm.dag.entryAfter [ "linkGeneration" "onFilesChange" ] ''
-      [ -x /usr/bin/update-desktop-database ] && /usr/bin/update-desktop-database || true
-    '';
-
-    rehash-current-shell = lib.hm.dag.entryAfter [ "linkGeneration" "onFilesChange" ] ''
-      s="$(readlink -f "$(/usr/bin/getent passwd "$USER" | cut -d: -f7)" 2>/dev/null || true)"
-      case "$s" in
-      */bash) "$s" -lc 'hash -r' ;;
-      */zsh)  "$s" -lc 'rehash' ;;
-      */fish) "$s" -lc 'fish_update_completions' ;;
-      esac || true
-    '';
+  # nixGL: GPU drivers for Nix GUI apps (Deck = AMD). mesa = OpenGL, vulkan = RADV.
+  # Use: home.packages = [ (config.lib.nixGL.wrap pkgs.<app>) ];  or  nixGLMesa <app>
+  targets.genericLinux.nixGL = {
+    packages = nixgl.packages;
+    defaultWrapper = "mesa";
+    vulkan.enable = true;
+    installScripts = [ "mesa" ];
   };
 
-  # The home.packages option allows you to install Nix packages into your
-  # environment.
-  home.packages = [
+  # XDG_DATA_DIRS order fix: keep Flatpak ahead of the SteamOS "Install Firefox"
+  # stub in the KDE menu (HM #8076 / #9356). Overrides prepend -> append.
+  home.sessionVariables.XDG_DATA_DIRS = lib.mkForce xdgDataDirsAppend;
+  systemd.user.sessionVariables.XDG_DATA_DIRS = lib.mkForce xdgDataDirsAppend;
+  # Dedup: one source for zsh/bash/fish, plus .bashrc for genericLinux's nix.sh re-source.
+  home.sessionVariablesExtra = lib.mkAfter dedupXdgDataDirs;
+  programs.bash.initExtra = lib.mkAfter dedupXdgDataDirs;
 
-  ];
-
-  # Home Manager is pretty good at managing dotfiles. The primary way to manage
-  # plain files is through 'home.file'.
-  home.file = {
-
-  };
-
+  # Native Wayland for Nix GUI apps (SteamOS 3.8).
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    NIXOS_OZONE_WL = "1";
+    QT_QPA_PLATFORM = "wayland;xcb";
   };
 
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
+  # Required: a managed shell sources hm-session-vars.sh (the fixes above) into the
+  # session. Deck's default login shell is bash; use programs.zsh instead if yours is zsh.
+  programs.bash.enable = true;
 
-    shellAliases = {
-      ll = "ls -l";
-    };
-
-    history.size = 10000;
-  };
+  # Add your own here, e.g.:
+  #   programs.git = { enable = true; userName = "..."; userEmail = "..."; };
+  #   programs.starship.enable = true;
+  #   home.packages = with pkgs; [ ripgrep fd ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

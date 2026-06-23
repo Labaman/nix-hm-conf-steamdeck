@@ -1,5 +1,5 @@
 {
-  description = "Home Manager config for Steam Deck with NixGL integration";
+  description = "Home Manager config for Steam Deck with nixGL integration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -9,7 +9,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixgl.url = "github:nix-community/nixGL";
+    # GPU driver wrappers for Nix GUI apps on non-NixOS.
+    nixgl = {
+      url = "github:nix-community/nixGL";
+      inputs.nixpkgs.follows = "nixpkgs"; # match wrapped apps' nixpkgs (glibc)
+    };
   };
 
   outputs = { nixpkgs, home-manager, nixgl, ... }:
@@ -17,16 +21,12 @@
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
-      overlays = [ nixgl.overlay ]; # https://github.com/nix-community/nixGL
-      config = {
-        allowUnfree = true;
-      };
+      config.allowUnfree = true;
     };
   in {
     homeConfigurations."deck" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
       modules = [ ./home.nix ];
-      # https://nix-community.github.io/home-manager/index.xhtml#sec-usage-gpu-non-nixos
       extraSpecialArgs = { inherit nixgl; };
     };
   };
