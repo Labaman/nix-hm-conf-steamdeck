@@ -14,6 +14,14 @@ Minimal [Home Manager](https://github.com/nix-community/home-manager) base for S
 
 ## Usage
 
+Install Nix if not already installed ([NixOS/nix-installer](https://github.com/NixOS/nix-installer), auto-detects SteamOS):
+
+```bash
+curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
+```
+
+Then:
+
 ```bash
 git clone https://github.com/Labaman/nix-hm-conf-steamdeck ~/.config/home-manager
 home-manager switch --flake ~/.config/home-manager#deck
