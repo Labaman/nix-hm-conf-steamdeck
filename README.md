@@ -17,7 +17,7 @@ Minimal [Home Manager](https://github.com/nix-community/home-manager) base for S
 Install Nix if not already installed ([NixOS/nix-installer](https://github.com/NixOS/nix-installer), auto-detects SteamOS):
 
 ```bash
-curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install
+curl -sSfL https://artifacts.nixos.org/nix-installer | sh -s -- install --enable-flakes
 ```
 
 Then:
