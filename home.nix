@@ -57,4 +57,17 @@ in
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # programs.git makes ~/.config/git/config a read-only symlink into the Nix store.
+  # Tools that call `git config --global` during setup (EmuDeck, rustup, etc.) fail with
+  # "could not lock config file ... Permission denied". Git writes --global to ~/.gitconfig
+  # when that file exists, falling back to the XDG path otherwise. Ensuring a writable
+  # ~/.gitconfig redirects those writes there; the managed config remains read-only
+  # and is still read by git (it checks both files).
+  home.activation.ensureMutableGitconfig =
+    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      if [ ! -e "$HOME/.gitconfig" ]; then
+        $DRY_RUN_CMD touch "$HOME/.gitconfig"
+      fi
+    '';
 }
