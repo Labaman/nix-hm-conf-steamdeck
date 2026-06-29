@@ -64,10 +64,10 @@ in
   # when that file exists, falling back to the XDG path otherwise. Ensuring a writable
   # ~/.gitconfig redirects those writes there; the managed config remains read-only
   # and is still read by git (it checks both files).
-  home.activation.ensureMutableGitconfig =
-    lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+  home.activation.ensureMutableGitconfig = lib.mkIf config.programs.git.enable
+    (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       if [ ! -e "$HOME/.gitconfig" ]; then
         $DRY_RUN_CMD touch "$HOME/.gitconfig"
       fi
-    '';
+    '');
 }
