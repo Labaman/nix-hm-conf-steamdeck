@@ -40,6 +40,20 @@ in
   home.sessionVariablesExtra = lib.mkAfter dedupXdgDataDirs;
   programs.bash.initExtra = lib.mkAfter dedupXdgDataDirs;
 
+  # After switch, system apps (Konsole etc.) vanish from the KDE launcher until the
+  # next login. update-desktop-database rewrites mimeinfo.cache, bumping the mtime of
+  # ~/.local/share/applications; kded6 picks that up via KDirWatch and rebuilds ksycoca
+  # in the live session context (correct XDG_MENU_PREFIX). Do NOT call kbuildsycoca6
+  # directly: it runs in the switch environment (e.g. VS Code terminal) which lacks
+  # XDG_MENU_PREFIX=plasma-, producing a menu without system apps.
+  # env -u LD_LIBRARY_PATH avoids a glibc conflict with Nix's own glibc.
+  home.activation.refreshPlasmaMenu =
+    lib.hm.dag.entryAfter [ "linkGeneration" "onFilesChange" ] ''
+      if [ -x /usr/bin/update-desktop-database ]; then
+        $DRY_RUN_CMD env -u LD_LIBRARY_PATH /usr/bin/update-desktop-database || true
+      fi
+    '';
+
   # Native Wayland for Nix GUI apps (SteamOS 3.8).
   home.sessionVariables = {
     NIXOS_OZONE_WL = "1";
