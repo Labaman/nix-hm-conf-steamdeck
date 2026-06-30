@@ -2,12 +2,12 @@
 
 Minimal [Home Manager](https://github.com/nix-community/home-manager) base for Steam Deck (SteamOS, non-NixOS).
 
-## What it fixes
+## What's included
 
 | Fix / Feature | Notes |
 |---------------|-------|
 | XDG_DATA_DIRS order | Keeps Flatpak ahead of system stubs in the KDE menu (HM [#8076](https://github.com/nix-community/home-manager/issues/8076) / [#9356](https://github.com/nix-community/home-manager/pull/9356)) |
-| KDE app menu rebuild | System apps vanish from launcher after `switch` without it |
+| KDE app menu rebuild | Nix app icons appear in the launcher right after `switch` without a relogin (icons may be blank on first switch, but are present). Also prevents system apps from vanishing after switch. |
 | nixGL | GPU driver wrappers for Nix GUI apps (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` for Electron/Qt apps |
 | EmuDeck / rustup | Writable `~/.gitconfig` alongside HM-managed git config |
