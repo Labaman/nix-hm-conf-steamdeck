@@ -81,12 +81,20 @@ in
   programs.bash.enable = true;
 
   # Add your own here, e.g.:
-  #   programs.git = { enable = true; userName = "..."; userEmail = "..."; };
   #   programs.starship.enable = true;
   #   home.packages = with pkgs; [ ripgrep fd ];
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+
+  # Uncomment to manage git. Activates ensureMutableGitconfig below automatically.
+  # programs.git = {
+  #   enable = true;
+  #   settings.user = {
+  #     name  = "Your Name";
+  #     email = "you@example.com";
+  #   };
+  # };
 
   # programs.git makes ~/.config/git/config a read-only symlink into the Nix store.
   # Tools that call `git config --global` during setup (EmuDeck, rustup, etc.) fail with
