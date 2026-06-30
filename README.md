@@ -47,6 +47,8 @@ Uncomment one of the shell blocks in `home.nix`.
 
 ### Changing the default login shell
 
+Switching from the default bash to zsh or fish is recommended — their HM modules are more actively developed, and the bash-specific workarounds become unnecessary.
+
 To use zsh or fish, switch to the **system-provided** binary — not the Nix-managed one.
 This keeps login working even if Nix is later removed (both shells ship with SteamOS):
 
