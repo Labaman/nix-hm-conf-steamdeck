@@ -112,7 +112,7 @@ in
   programs.starship = {
     enable = true;
     settings = {
-      format = "\\[$username@$hostname $directory\\]$git_branch$character ";
+      format = "\\[$username@$hostname $directory\\]$git_branch$git_status$character ";
       add_newline = false;
 
       username = {
@@ -138,6 +138,22 @@ in
       git_branch = {
         format = " [\\($branch\\)]($style)";
         style = "bold yellow";
+      };
+
+      git_status = {
+        format = "[$all_status]($style)";
+        style = "bold red";
+        modified   = "*";
+        staged     = "+";
+        untracked  = "?";
+        deleted    = "*";
+        renamed    = "";
+        conflicted = "!";
+        stashed    = "";
+        ahead      = "⇡";
+        behind     = "⇣";
+        diverged   = "⇕";
+        up_to_date = "";
       };
 
       character = {
