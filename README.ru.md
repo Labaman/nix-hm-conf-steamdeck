@@ -2,7 +2,9 @@
 
 [English](README.md) | **Русский**
 
-Минимальный базовый конфиг [Home Manager](https://github.com/nix-community/home-manager) для Steam Deck (SteamOS, non-NixOS).
+Nix — один из официально поддерживаемых способов установки дополнительного ПО на SteamOS (поддержка появилась в версии 3.5). Пакеты и настройки Nix не слетают при обновлениях SteamOS — достойная альтернатива Flatpak, Distrobox и Homebrew.
+
+Этот репозиторий содержит минимальный базовый конфиг [Home Manager](https://github.com/nix-community/home-manager) для SteamOS. Конфиг учитывает особенности работы Nix на Steam Deck и включает фиксы ключевых проблем, которые могут нарушить работу системы и сторонних приложений, установленных не через Nix.
 
 ## Возможности
 
