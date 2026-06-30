@@ -49,8 +49,10 @@ in
   # stub in the KDE menu (HM #8076 / #9356). Overrides prepend -> append.
   home.sessionVariables.XDG_DATA_DIRS = lib.mkForce xdgDataDirsAppend;
   systemd.user.sessionVariables.XDG_DATA_DIRS = lib.mkForce xdgDataDirsAppend;
-  # Dedup: one source for zsh/bash/fish, plus .bashrc for genericLinux's nix.sh re-source.
+  # Dedup for all shells via hm-session-vars.sh (zsh, bash, fish via babelfish).
   home.sessionVariablesExtra = lib.mkAfter dedupXdgDataDirs;
+  # bash only (genericLinux re-sources nix.sh in .bashrc after the guard) — may be
+  # removed when using zsh or fish.
   programs.bash.initExtra = lib.mkAfter dedupXdgDataDirs;
 
   # After switch, system apps (Konsole etc.) vanish from the KDE launcher until the
@@ -73,14 +75,9 @@ in
     QT_QPA_PLATFORM = "wayland;xcb";
   };
 
-  # KDE sources *.sh files from this directory before calling
-  # `systemctl --user import-environment`, so these vars reach every
-  # app launched from the KDE menu, not just ones opened from a terminal.
-  #
-  # Only needed when bash is the managed shell: bash does not source
-  # hm-session-vars.sh for non-interactive non-login invocations (the
-  # context startplasma-wayland runs in). zsh (.zshenv) and fish
-  # (config.fish) always source it, making this file redundant for them.
+  # bash only: pushes Wayland vars to KDE-launched apps via plasma-workspace/env,
+  # since bash misses the non-interactive non-login startup path. Inert for zsh/fish
+  # (guarded by lib.mkIf) — may be removed when switching to zsh or fish.
   home.file.".config/plasma-workspace/env/nixos-ozone-wl.sh" =
     lib.mkIf config.programs.bash.enable {
       text = ''
@@ -89,9 +86,20 @@ in
       '';
     };
 
-  # Required: a managed shell sources hm-session-vars.sh (the fixes above) into the
-  # session. Deck's default login shell is bash; use programs.zsh instead if yours is zsh.
-  programs.bash.enable = true;
+  # ── Shell (required — uncomment ONE) ─────────────────────────────────────────
+  # See README for shell comparison, advantages of zsh/fish, and how to change the
+  # default login shell.
+  #
+  # programs.bash.enable = true;
+  #
+  # programs.zsh = {
+  #   enable = true;
+  #   enableCompletion = true;
+  #   autosuggestion.enable = true;
+  #   syntaxHighlighting.enable = true;
+  # };
+  #
+  # programs.fish.enable = true;
 
   # ~/.local/bin in PATH: pip, cargo, and official installers (Claude Code etc.) put
   # binaries there. Written to hm-session-vars.sh -> works for bash, zsh, and fish.
