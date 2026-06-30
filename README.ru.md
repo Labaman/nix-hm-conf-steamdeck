@@ -2,7 +2,7 @@
 
 [English](README.md) | **Русский**
 
-Минимальная база [Home Manager](https://github.com/nix-community/home-manager) для Steam Deck (SteamOS, non-NixOS).
+Минимальный базовый конфиг [Home Manager](https://github.com/nix-community/home-manager) для Steam Deck (SteamOS, non-NixOS).
 
 ## Что включено
 
@@ -12,10 +12,10 @@
 | Перестройка меню KDE | Иконки Nix-приложений появляются в лаунчере сразу после `switch`, без перезахода в сессию (при первом switch иконки могут быть пустыми, но приложения запускаются). Также предотвращает исчезновение системных приложений из меню. |
 | nixGL | Обёртки GPU-драйверов для Nix GUI-приложений (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` для Electron/Qt-приложений |
-| EmuDeck / rustup | Писабельный `~/.gitconfig` рядом с управляемым HM git-конфигом |
-| Промпт Starship | Стиль под дефолтный SteamOS bash: `[user@host dir] (ветка)*$` — работает в bash, zsh и fish |
+| EmuDeck / rustup | Изменяемый `~/.gitconfig` рядом с управляемым HM git-конфигом |
+| Промпт Starship | Стиль промта оболочки под дефолтный SteamOS bash: `[user@host dir] (ветка)*$` — работает в bash, zsh и fish |
 
-## Установка
+## Использование
 
 Установить Nix, если ещё не установлен ([NixOS/nix-installer](https://github.com/NixOS/nix-installer), автоматически определяет SteamOS):
 
@@ -30,9 +30,9 @@ git clone https://github.com/Labaman/nix-hm-conf-steamdeck ~/.config/home-manage
 home-manager switch --flake ~/.config/home-manager#deck
 ```
 
-Свои пакеты и программы добавляй ниже комментария в конце `home.nix`.
+Свои пакеты и программы добавляй ниже комментария в внутри `home.nix`.
 
-## Оболочка (опционально)
+## Смена оболочки (опционально)
 
 Управляемая оболочка нужна для того, чтобы переменные сессии (фиксы выше) попадали в графическую сессию. Раскомментируй один из блоков в `home.nix`.
 
@@ -44,7 +44,8 @@ home-manager switch --flake ~/.config/home-manager#deck
 
 ### Смена дефолтного логин-шелла
 
-Для zsh или fish меняй шелл на **системный** бинарь, а не на Nix-managed — тогда логин останется рабочим даже если Nix будет удалён (оба шелла идут в комплекте с SteamOS):
+Рекомендуется изменить деофлтный bash на  zsh или fish, так как их модули HM развиваются активнее и отпадает необходимость в специфичных только для bash костылей.
+При смене оболочки на zsh или fish следует указывать **системный** бинарь, а не на Nix-managed — тогда логин останется рабочим даже если Nix будет удалён (оба шелла идут в комплекте с SteamOS):
 
 Переключиться на **zsh**:
 ```bash
