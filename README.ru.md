@@ -4,12 +4,12 @@
 
 Минимальный базовый конфиг [Home Manager](https://github.com/nix-community/home-manager) для Steam Deck (SteamOS, non-NixOS).
 
-## Что включено
+## Возможности
 
 | Фикс / Фича | Описание |
 |-------------|----------|
 | Порядок XDG_DATA_DIRS | Flatpak остаётся первым в меню KDE — без этого вместо Flatpak-приложений (Firefox и др.) открывается системный стаб «Install Firefox» (HM [#8076](https://github.com/nix-community/home-manager/issues/8076) / [#9356](https://github.com/nix-community/home-manager/pull/9356)) |
-| Перестройка меню KDE | Иконки Nix-приложений появляются в лаунчере сразу после `switch`, без перезахода в сессию (при первом switch иконки могут быть пустыми, но приложения запускаются). Также предотвращает исчезновение системных приложений из меню. |
+| Обновление меню KDE | Иконки Nix-приложений появляются в лаунчере сразу после `switch`, без перезахода в сессию (при первом switch иконки могут быть пустыми, но приложения запускаются). Также предотвращает исчезновение системных приложений из меню. |
 | nixGL | Обёртки GPU-драйверов для Nix GUI-приложений (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` для Electron/Qt-приложений |
 | EmuDeck / rustup | Изменяемый `~/.gitconfig` рядом с управляемым HM git-конфигом |
