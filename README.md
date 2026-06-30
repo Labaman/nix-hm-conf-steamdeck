@@ -34,7 +34,7 @@ home-manager switch --flake ~/.config/home-manager#deck
 
 Add your own packages and programs below the comment at the bottom of `home.nix`.
 
-## Shell (optional)
+## Shell
 
 A managed shell is required to source session variables into the graphical session.
 Uncomment one of the shell blocks in `home.nix`.
@@ -45,7 +45,7 @@ Uncomment one of the shell blocks in `home.nix`.
 | **zsh** | login, interactive & non-interactive | `.zshenv` is sourced for every zsh invocation, so session vars always load without any workarounds. Does not touch bash dotfiles. The `# bash only` entries in `home.nix` may be removed. |
 | **fish** | login, interactive & non-interactive | Autocompletion, command suggestions, and syntax highlighting work out of the box without extra config. Does not touch bash dotfiles. The `# bash only` entries may be removed. Note: fish syntax is not POSIX/bash-compatible — bash scripts won't run directly inside fish. |
 
-### Changing the default login shell
+### Changing the default login shell (optional)
 
 Switching from the default bash to zsh or fish is recommended — their HM modules are more actively developed, and the bash-specific workarounds become unnecessary.
 
