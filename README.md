@@ -1,5 +1,7 @@
 # nix-hm-conf-steamdeck
 
+**English** | [Русский](README.ru.md)
+
 Minimal [Home Manager](https://github.com/nix-community/home-manager) base for Steam Deck (SteamOS, non-NixOS).
 
 ## What's included
