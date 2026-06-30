@@ -105,8 +105,49 @@ in
   # binaries there. Written to hm-session-vars.sh -> works for bash, zsh, and fish.
   home.sessionPath = [ "$HOME/.local/bin" ];
 
+  # Starship prompt — shell-independent (same toml renders in bash, zsh, and fish).
+  # Matches the default SteamOS bash style [user@host dir]$ with git branch added:
+  #   [deck@steamdeck ~]$              outside a repo
+  #   [deck@steamdeck myapp] (main)$   inside a repo
+  programs.starship = {
+    enable = true;
+    settings = {
+      format = "\\[$username@$hostname $directory\\]$git_branch$character ";
+      add_newline = false;
+
+      username = {
+        show_always = true;
+        style_user = "bold green";
+        style_root = "bold red";
+        format = "[$user]($style)";
+      };
+
+      hostname = {
+        ssh_only = false;
+        style = "bold green";
+        format = "[$hostname]($style)";
+      };
+
+      directory = {
+        style = "bold blue";
+        truncation_length = 1;
+        truncate_to_repo = false;
+        format = "[$path]($style)";
+      };
+
+      git_branch = {
+        format = " [\\($branch\\)]($style)";
+        style = "bold yellow";
+      };
+
+      character = {
+        success_symbol = "[\\$](bold white)";
+        error_symbol   = "[\\$](bold red)";
+      };
+    };
+  };
+
   # Add your own here, e.g.:
-  #   programs.starship.enable = true;
   #   home.packages = with pkgs; [ ripgrep fd ];
 
   # Let Home Manager install and manage itself.
