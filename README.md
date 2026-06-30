@@ -2,18 +2,20 @@
 
 **English** | [Русский](README.ru.md)
 
-Minimal [Home Manager](https://github.com/nix-community/home-manager) base for Steam Deck (SteamOS, non-NixOS).
+Nix is one of the officially supported ways to install additional software on SteamOS (available since version 3.5). Packages and settings installed via Nix survive SteamOS updates — making it a solid alternative to Flatpak, Distrobox, and Homebrew.
 
-## What's included
+This repository is a minimal [Home Manager](https://github.com/nix-community/home-manager) base config for SteamOS. It accounts for the quirks of running Nix on Steam Deck and includes fixes for the main issues that can break the system or apps installed outside of Nix.
+
+## Features
 
 | Fix / Feature | Notes |
 |---------------|-------|
 | XDG_DATA_DIRS order | Keeps Flatpak ahead of system stubs in the KDE menu (HM [#8076](https://github.com/nix-community/home-manager/issues/8076) / [#9356](https://github.com/nix-community/home-manager/pull/9356)) |
-| KDE app menu rebuild | Nix app icons appear in the launcher right after `switch` without a relogin (icons may be blank on first switch, but are present). Also prevents system apps from vanishing after switch. |
+| KDE app menu update | Nix app icons appear in the launcher right after `switch` without a relogin (icons may be blank on first switch, but are present). Also prevents system apps from vanishing after switch. |
 | nixGL | GPU driver wrappers for Nix GUI apps (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` for Electron/Qt apps |
 | EmuDeck / rustup | Writable `~/.gitconfig` alongside HM-managed git config |
-| Starship prompt | SteamOS-style `[user@host dir] (branch)*$` — works in bash, zsh, and fish |
+| Shell prompt (Starship) | Consistent SteamOS-style prompt across bash, zsh, and fish: `[user@host dir] (branch)*$` |
 
 ## Usage
 
