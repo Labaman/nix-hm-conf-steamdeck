@@ -13,7 +13,7 @@
 | nixGL | Обёртки GPU-драйверов для Nix GUI-приложений (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` для Electron/Qt-приложений |
 | EmuDeck / rustup | Изменяемый `~/.gitconfig` рядом с управляемым HM git-конфигом |
-| Промпт Starship | Промпт в стиле дефолтного SteamOS bash: `[user@host dir] (ветка)*$` — работает в bash, zsh и fish |
+| Строка приглашения оболочки (Starship) | Единый вид для bash, zsh и fish в стиле дефолтного SteamOS: `[user@host dir] (ветка)*$` |
 
 ## Использование
 
