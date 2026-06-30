@@ -32,6 +32,19 @@ in
     installScripts = [ "mesa" ];
   };
 
+  # Example: browser wrapped with nixGL via the programs.chromium HM module.
+  # The module generates a proper .desktop entry and handles XDG mime types;
+  # nixGL.wrap injects the host GPU drivers so the app can render on the Deck.
+  # Swap pkgs.google-chrome for pkgs.brave / pkgs.chromium / pkgs.ungoogled-chromium etc.
+  # programs.chromium = {
+  #   enable = true;
+  #   package = config.lib.nixGL.wrap pkgs.google-chrome;
+  #   commandLineArgs = [
+  #     "--enable-features=VaapiIgnoreDriverChecks,AcceleratedVideoEncoder,ParallelDownloading"
+  #     "--ignore-gpu-blocklist"
+  #   ];
+  # };
+
   # XDG_DATA_DIRS order fix: keep Flatpak ahead of the SteamOS "Install Firefox"
   # stub in the KDE menu (HM #8076 / #9356). Overrides prepend -> append.
   home.sessionVariables.XDG_DATA_DIRS = lib.mkForce xdgDataDirsAppend;
