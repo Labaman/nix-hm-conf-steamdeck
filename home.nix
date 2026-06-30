@@ -80,6 +80,10 @@ in
   # session. Deck's default login shell is bash; use programs.zsh instead if yours is zsh.
   programs.bash.enable = true;
 
+  # ~/.local/bin in PATH: pip, cargo, and official installers (Claude Code etc.) put
+  # binaries there. Written to hm-session-vars.sh -> works for bash, zsh, and fish.
+  home.sessionPath = [ "$HOME/.local/bin" ];
+
   # Add your own here, e.g.:
   #   programs.starship.enable = true;
   #   home.packages = with pkgs; [ ripgrep fd ];
