@@ -15,7 +15,7 @@ This repository is a minimal [Home Manager](https://github.com/nix-community/hom
 | nixGL | GPU driver wrappers for Nix GUI apps (OpenGL + Vulkan/RADV) |
 | Wayland | `NIXOS_OZONE_WL` + `QT_QPA_PLATFORM` for Electron/Qt apps |
 | EmuDeck / rustup | Writable `~/.gitconfig` alongside HM-managed git config |
-| Shell prompt (Starship) | Consistent SteamOS-style prompt across bash, zsh, and fish: `[user@host dir] (branch)*$` |
+| Shell prompt (Starship) | Consistent SteamOS-style prompt across bash, zsh, and fish: `(user@host dir) [branch*]$` |
 
 ## Usage
 
